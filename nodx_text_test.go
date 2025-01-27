@@ -15,7 +15,7 @@ func TestNodeText(t *testing.T) {
 
 		err := node.Render(buf)
 		assert.NoError(t, err)
-		assert.Equal(t, buf.String(), text)
+		assert.Equal(t, text, buf.String())
 	})
 
 	t.Run("Text render string", func(t *testing.T) {
@@ -24,7 +24,7 @@ func TestNodeText(t *testing.T) {
 
 		str, err := node.RenderString()
 		assert.NoError(t, err)
-		assert.Equal(t, str, text)
+		assert.Equal(t, text, str)
 	})
 
 	t.Run("Text render bytes", func(t *testing.T) {
@@ -33,7 +33,7 @@ func TestNodeText(t *testing.T) {
 
 		bytes, err := node.RenderBytes()
 		assert.NoError(t, err)
-		assert.Equal(t, string(bytes), text)
+		assert.Equal(t, text, string(bytes))
 	})
 
 	t.Run("Empty text render", func(t *testing.T) {
@@ -42,7 +42,7 @@ func TestNodeText(t *testing.T) {
 
 		err := node.Render(buf)
 		assert.NoError(t, err)
-		assert.Equal(t, buf.String(), "")
+		assert.Equal(t, "", buf.String())
 	})
 
 	t.Run("Not initialized nodeText", func(t *testing.T) {
@@ -51,6 +51,6 @@ func TestNodeText(t *testing.T) {
 
 		err := node.Render(buf)
 		assert.NoError(t, err)
-		assert.Equal(t, buf.String(), "")
+		assert.Equal(t, "", buf.String())
 	})
 }
