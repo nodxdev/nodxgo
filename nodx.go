@@ -84,3 +84,21 @@ func Raw(value string) Node {
 func Rawf(format string, a ...any) Node {
 	return Raw(fmt.Sprintf(format, a...))
 }
+
+// If renders the node if the provided condition is true, otherwise
+// it renders nothing.
+func If(condition bool, node Node) Node {
+	if condition {
+		return node
+	}
+	return nil
+}
+
+// IfFunc executes the provided function and renders its result if the
+// provided condition is true, otherwise it renders nothing.
+func IfFunc(condition bool, function func() Node) Node {
+	if condition {
+		return function()
+	}
+	return nil
+}
