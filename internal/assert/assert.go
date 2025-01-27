@@ -19,17 +19,17 @@ func Error(t *testing.T, err error) {
 	}
 }
 
-func Equal(t *testing.T, got, want any) {
+func Equal(t *testing.T, expected, got any) {
 	t.Helper()
-	if got != want {
-		t.Errorf("Expected %v, got %v", want, got)
+	if expected != got {
+		t.Errorf("Expected %v, got %v", expected, got)
 	}
 }
 
-func NotEqual(t *testing.T, got, want any) {
+func NotEqual(t *testing.T, expected, got any) {
 	t.Helper()
-	if got == want {
-		t.Errorf("Expected %v, got %v", want, got)
+	if expected == got {
+		t.Errorf("Expected %v, got %v", expected, got)
 	}
 }
 
