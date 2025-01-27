@@ -3,6 +3,12 @@
 version: "3"
 
 tasks:
+  codegen:
+    desc: Generate the utilities code
+    cmds:
+      - chmod +x codegen.ts
+      - ./codegen.ts
+
   test:
     desc: Run all the project tests
     cmd: go test ./...
