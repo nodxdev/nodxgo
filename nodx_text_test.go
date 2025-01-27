@@ -44,4 +44,13 @@ func TestNodeText(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, buf.String(), "")
 	})
+
+	t.Run("Not initialized nodeText", func(t *testing.T) {
+		node := nodeText{}
+		buf := &strings.Builder{}
+
+		err := node.Render(buf)
+		assert.NoError(t, err)
+		assert.Equal(t, buf.String(), "")
+	})
 }
