@@ -20,12 +20,12 @@ var _ Node = (*ClassMap)(nil)
 //	isOdd := func(n int) bool { return n % 2 != 0 }
 //	isEven := func(n int) bool { return n % 2 == 0 }
 //
-//	renderOdd := isOdd(3)  // true
+//	renderOdd := isOdd(3)   // true
 //	renderEven := isEven(3) // false
 //
 //	cm := ClassMap{
-//		"odd-class":  renderOdd,      // Included because 3 is odd
-//		"even-class": renderEven,     // Excluded because 3 is not even
+//		"odd-class":  renderOdd,      // Included
+//		"even-class": renderEven,     // Excluded
 //		"always-on":  true,           // Always included
 //	}
 //
