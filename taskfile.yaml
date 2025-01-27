@@ -5,9 +5,7 @@ version: "3"
 tasks:
   codegen:
     desc: Generate the utilities code
-    cmds:
-      - chmod +x codegen.ts
-      - ./codegen.ts
+    cmd: deno run -A ./codegen.ts
 
   test:
     desc: Run all the project tests
