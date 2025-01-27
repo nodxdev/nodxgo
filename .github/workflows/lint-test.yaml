@@ -1,0 +1,22 @@
+name: Lint and test
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  lint-and-test:
+    name: Lint and test the code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run lint and test
+        uses: devcontainers/ci@v0.3
+        with:
+          push: never
+          runCmd: task lint && task test
