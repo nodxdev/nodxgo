@@ -19,4 +19,6 @@ tasks:
 
   fmt:
     desc: Run all the project formatters
-    cmd: go fmt ./...
+    cmds:
+      - deno fmt
+      - go fmt ./...
