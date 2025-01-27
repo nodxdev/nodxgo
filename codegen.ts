@@ -1,27 +1,17 @@
 #!/usr/bin/env -S deno run -A
+import { createFuncName, hasConflict } from "./codegen_helpers.ts";
+import type { Attr, El } from "./codegen_helpers.ts";
 
 const elements = await getElements();
 const attributes = await getAttributes();
-const keywords = await getKeywords();
 
-generateElements(elements, keywords);
-generateAttributes(attributes, keywords);
+generateElements(elements, attributes);
+generateAttributes(elements, attributes);
 runFormatter();
 
 ///////////////
 // Functions //
 ///////////////
-
-interface El {
-  name: string;
-  isVoid: boolean;
-  description: string;
-}
-
-interface Attr {
-  name: string;
-  description: string;
-}
 
 async function getJson<T>(path: string): Promise<T> {
   const response = await fetch(path);
@@ -40,19 +30,6 @@ async function getAttributes(): Promise<Attr[]> {
   );
 }
 
-async function getKeywords(): Promise<string[]> {
-  const langs = await getJson<{ [lang: string]: string[] }>(
-    "https://raw.githubusercontent.com/nodxdev/nodx/refs/heads/main/data/keywords.json",
-  );
-
-  const keywords: string[] = [];
-  for (const lang in langs) {
-    keywords.push(...langs[lang]);
-  }
-
-  return [...new Set(keywords)];
-}
-
 function runFormatter() {
   const cmd = new Deno.Command("task", { args: ["fmt"] });
   const out = cmd.outputSync();
@@ -62,24 +39,25 @@ function runFormatter() {
   }
 }
 
-function generateElements(elements: El[], keywords: string[]) {
+function generateElements(els: El[], attrs: Attr[]) {
   const fileContent: string[] = [`package nodx`, ``];
 
-  for (const element of elements) {
-    const funcName = resolveNameConflict(element.name, "El", keywords);
+  for (const el of els) {
+    const isConflict = hasConflict(el.name, els, attrs);
+    const funcName = createFuncName(el.name, "El", isConflict);
 
-    if (element.isVoid) {
-      fileContent.push(`// ${funcName} ${element.description}`);
-      fileContent.push(`func ${funcName}(children ...Node) Node {`);
-      fileContent.push(`\treturn ElVoid("${element.name}", children...)`);
+    if (el.isVoid) {
+      fileContent.push(`// ${funcName.name} ${el.description}`);
+      fileContent.push(`func ${funcName.name}(children ...Node) Node {`);
+      fileContent.push(`\treturn ElVoid("${el.name}", children...)`);
       fileContent.push(`}`);
       fileContent.push("");
     }
 
-    if (!element.isVoid) {
-      fileContent.push(`// ${funcName} ${element.description}`);
-      fileContent.push(`func ${funcName}(children ...Node) Node {`);
-      fileContent.push(`\treturn El("${element.name}", children...)`);
+    if (!el.isVoid) {
+      fileContent.push(`// ${funcName.name} ${el.description}`);
+      fileContent.push(`func ${funcName.name}(children ...Node) Node {`);
+      fileContent.push(`\treturn El("${el.name}", children...)`);
       fileContent.push(`}`);
       fileContent.push("");
     }
@@ -90,35 +68,32 @@ function generateElements(elements: El[], keywords: string[]) {
   console.log("Generated gen_elements.go");
 }
 
-function generateAttributes(attrs: Attr[], keywords: string[]) {
+function generateAttributes(els: El[], attrs: Attr[]) {
   const fileContent: string[] = [`package nodx`, ``];
 
   for (const attr of attrs) {
-    const funcName = resolveNameConflict(attr.name, "Attr", keywords);
-    fileContent.push(`// ${funcName} ${attr.description}`);
-    fileContent.push(`func ${funcName}(value string) Node {`);
-    fileContent.push(`\treturn Attr("${attr.name}", value)`);
-    fileContent.push(`}`);
-    fileContent.push("");
+    const isConflict = hasConflict(attr.name, els, attrs);
+    const funcName = createFuncName(attr.name, "Attr", isConflict);
+
+    if (funcName.isGlob) {
+      attr.name = attr.name.replaceAll("*", "");
+      fileContent.push(`// ${funcName.name} ${attr.description}`);
+      fileContent.push(`func ${funcName.name}(key string,value string) Node {`);
+      fileContent.push(`\treturn Attr("${attr.name}"+key, value)`);
+      fileContent.push(`}`);
+      fileContent.push("");
+    }
+
+    if (!funcName.isGlob) {
+      fileContent.push(`// ${funcName.name} ${attr.description}`);
+      fileContent.push(`func ${funcName.name}(value string) Node {`);
+      fileContent.push(`\treturn Attr("${attr.name}", value)`);
+      fileContent.push(`}`);
+      fileContent.push("");
+    }
   }
 
   Deno.removeSync("gen_attributes.go");
   Deno.writeTextFileSync("gen_attributes.go", fileContent.join("\n"));
   console.log("Generated gen_attributes.go");
-}
-
-function resolveNameConflict(
-  name: string,
-  suffix: string,
-  keywords: string[],
-): string {
-  const camelCaseName = capitalize(name);
-  if (keywords.includes(name.toLowerCase())) {
-    return `${camelCaseName}${suffix}`;
-  }
-  return camelCaseName;
-}
-
-function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
