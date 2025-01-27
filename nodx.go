@@ -16,3 +16,40 @@ type Node interface {
 	// RenderBytes returns the node HTML as a byte slice.
 	RenderBytes() ([]byte, error)
 }
+
+// El creates a new nodx.Node representing an HTML element.
+//
+// Useful for creating HTML elements not included in this library.
+func El(name string, children ...Node) Node {
+	return newNodeElement(false, name, children...)
+}
+
+// ElVoid creates a new nodx.Node representing an HTML void element.
+//
+// Useful for creating HTML elements not included in this library.
+func ElVoid(name string, children ...Node) Node {
+	return newNodeElement(true, name, children...)
+}
+
+// Attr creates a new nodx.Node representing an HTML attribute.
+//
+// Useful for creating HTML attributes not included in this library.
+func Attr(name string, value string) Node {
+	return newNodeAttribute(name, value)
+}
+
+// Text creates a new nodx.Node representing an HTML text node.
+// The value is escaped to ensure it is safe to use in HTML
+// preventing XSS attacks.
+func Text(value string) Node {
+	return newNodeText(EscapeHTML(value))
+}
+
+// Raw creates a new nodx.Node representing an HTML raw text node.
+// The value is not escaped, so it is the responsibility of the caller to
+// ensure that the value is safe to use in HTML.
+//
+// Useful when you need to render raw HTML such as <script> tags.
+func Raw(value string) Node {
+	return newNodeText(value)
+}
