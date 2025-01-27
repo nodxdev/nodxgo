@@ -48,6 +48,8 @@ function generateElements(els: El[], attrs: Attr[]) {
 
     if (el.isVoid) {
       fileContent.push(`// ${funcName.name} ${el.description}`);
+      fileContent.push(`//`);
+      fileContent.push(`// Output: <${el.name} .../>`);
       fileContent.push(`func ${funcName.name}(children ...Node) Node {`);
       fileContent.push(`\treturn ElVoid("${el.name}", children...)`);
       fileContent.push(`}`);
@@ -56,6 +58,8 @@ function generateElements(els: El[], attrs: Attr[]) {
 
     if (!el.isVoid) {
       fileContent.push(`// ${funcName.name} ${el.description}`);
+      fileContent.push(`//`);
+      fileContent.push(`// Output: <${el.name} ...>...</${el.name}>`);
       fileContent.push(`func ${funcName.name}(children ...Node) Node {`);
       fileContent.push(`\treturn El("${el.name}", children...)`);
       fileContent.push(`}`);
@@ -78,6 +82,8 @@ function generateAttributes(els: El[], attrs: Attr[]) {
     if (funcName.isGlob) {
       attr.name = attr.name.replaceAll("*", "");
       fileContent.push(`// ${funcName.name} ${attr.description}`);
+      fileContent.push(`//`);
+      fileContent.push(`// Output: ${attr.name}{key}="{value}"`);
       fileContent.push(`func ${funcName.name}(key string,value string) Node {`);
       fileContent.push(`\treturn Attr("${attr.name}"+key, value)`);
       fileContent.push(`}`);
@@ -86,6 +92,8 @@ function generateAttributes(els: El[], attrs: Attr[]) {
 
     if (!funcName.isGlob) {
       fileContent.push(`// ${funcName.name} ${attr.description}`);
+      fileContent.push(`//`);
+      fileContent.push(`// Output: ${attr.name}="{value}"`);
       fileContent.push(`func ${funcName.name}(value string) Node {`);
       fileContent.push(`\treturn Attr("${attr.name}", value)`);
       fileContent.push(`}`);
