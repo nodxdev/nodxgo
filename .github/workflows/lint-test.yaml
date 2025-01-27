@@ -19,7 +19,10 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           push: never
-          runCmd: task lint && task test
+          runCmd: |
+            task lint
+            task test
+            task codegen
 
   test-matrix:
     name: Test multiple Go versions
