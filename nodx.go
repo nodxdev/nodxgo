@@ -102,3 +102,13 @@ func IfFunc(condition bool, function func() Node) Node {
 	}
 	return nil
 }
+
+// Map accepts a slice of any type and a function that returns a Node
+// and returns a group of the nodes returned by the function.
+func Map[T any](slice []T, function func(T) Node) Node {
+	nodes := make([]Node, len(slice))
+	for i, item := range slice {
+		nodes[i] = function(item)
+	}
+	return Group(nodes...)
+}
