@@ -28,7 +28,6 @@ func (nt nodeText) Render(w io.Writer) error {
 	if nt.text == "" {
 		return nil
 	}
-
 	_, err := fmt.Fprintf(w, "%s", nt.text)
 	return err
 }
