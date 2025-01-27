@@ -1,1 +1,1 @@
-# nodxgo
+# NodX for Golang
