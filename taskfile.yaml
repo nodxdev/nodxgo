@@ -11,11 +11,15 @@ tasks:
 
   test:
     desc: Run all the project tests
-    cmd: go test ./...
+    cmds:
+      - deno test
+      - go test ./...
 
   lint:
     desc: Run all the project linters
-    cmd: golangci-lint run ./...
+    cmds:
+      - deno lint
+      - golangci-lint run ./...
 
   fmt:
     desc: Run all the project formatters
