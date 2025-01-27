@@ -73,7 +73,7 @@ func If(condition bool, node Node) Node {
 	if condition {
 		return node
 	}
-	return nil
+	return Group()
 }
 
 // IfFunc executes and renders the result of a function based on the provided boolean condition.
@@ -82,7 +82,7 @@ func IfFunc(condition bool, function func() Node) Node {
 	if condition {
 		return function()
 	}
-	return nil
+	return Group()
 }
 
 // Map transforms a slice of any type into a group of nodes by applying a function to each element.
