@@ -17,6 +17,16 @@ type Node interface {
 	RenderBytes() ([]byte, error)
 }
 
+// Group creates a new group of nodes.
+//
+// This helper function allows for grouping multiple nodes into a single node without
+// adding extra HTML elements.
+//
+// The resulting node renders its child nodes directly without any wrapping tag.
+func Group(nodes ...Node) Node {
+	return newNodeGroup(nodes...)
+}
+
 // El creates a new nodx.Node representing an HTML element.
 //
 // Useful for creating HTML elements not included in this library.
