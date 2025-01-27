@@ -17,6 +17,9 @@ type nodeText struct {
 }
 
 // newNodeText creates a new text node.
+//
+// IMPORTANT: This node renders the text as is, without escaping it. It is the
+// responsibility of the caller to ensure that the text is properly escaped.
 func newNodeText(text string) nodeText {
 	return nodeText{
 		text: text,
