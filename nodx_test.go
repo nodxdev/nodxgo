@@ -8,43 +8,31 @@ import (
 
 func TestGroup(t *testing.T) {
 	t.Run("Group with no nodes", func(t *testing.T) {
-		group := Group()
+		node := Group()
 		expected := ""
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Group with multiple nodes", func(t *testing.T) {
-		group := Group(Text("Hello"), Text("World"))
+		node := Group(Text("Hello"), Text("World"))
 		expected := "HelloWorld"
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Group with some nil nodes", func(t *testing.T) {
-		group := Group(Text("Hello"), nil, Text("World"))
+		node := Group(Text("Hello"), nil, Text("World"))
 		expected := "HelloWorld"
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Group with all nil nodes", func(t *testing.T) {
-		group := Group(nil, nil, nil)
+		node := Group(nil, nil, nil)
 		expected := ""
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Group with mixed children", func(t *testing.T) {
-		group := Group(
+		node := Group(
 			El("div",
 				Attr("class", "container"),
 				Text("Hello"),
@@ -56,159 +44,120 @@ func TestGroup(t *testing.T) {
 			Text("World"),
 		)
 		expected := `<div class="container">HelloWorld</div>HelloWorld`
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestEl(t *testing.T) {
 	t.Run("El with no children", func(t *testing.T) {
-		el := El("div")
+		node := El("div")
 		expected := "<div></div>"
-
-		got, err := el.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("El with children", func(t *testing.T) {
-		el := El(
+		node := El(
 			"div",
 			Attr("class", "container"),
 			Text("Hello"),
 			Text("World"),
 		)
 		expected := `<div class="container">HelloWorld</div>`
-
-		got, err := el.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestElVoid(t *testing.T) {
 	t.Run("ElVoid with no children", func(t *testing.T) {
-		elVoid := ElVoid("img")
+		node := ElVoid("img")
 		expected := "<img>"
-
-		got, err := elVoid.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("ElVoid with ignored children", func(t *testing.T) {
-		elVoid := ElVoid(
+		node := ElVoid(
 			"img",
 			Attr("class", "container"),
 			Text("Ignored"),
 		)
 		expected := `<img class="container">`
-
-		got, err := elVoid.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestAttr(t *testing.T) {
 	t.Run("Attr with value", func(t *testing.T) {
-		attr := Attr("class", "container")
+		node := Attr("class", "container")
 		expected := `class="container"`
-
-		got, err := attr.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Attr with empty value", func(t *testing.T) {
-		attr := Attr("class", "")
+		node := Attr("class", "")
 		expected := `class=""`
+		assert.Render(t, expected, node)
+	})
 
-		got, err := attr.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+	t.Run("Attr with empty name", func(t *testing.T) {
+		node := Attr("", "value")
+		expected := ""
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestText(t *testing.T) {
 	t.Run("Text with content", func(t *testing.T) {
-		text := Text("Hello <b>World</b>")
+		node := Text("Hello <b>World</b>")
 		expected := "Hello &lt;b&gt;World&lt;/b&gt;"
-
-		got, err := text.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Text with empty content", func(t *testing.T) {
-		text := Text("")
+		node := Text("")
 		expected := ""
-
-		got, err := text.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestTextf(t *testing.T) {
 	t.Run("Textf with formatted content", func(t *testing.T) {
-		text := Textf("Hello, %s!", "World")
+		node := Textf("Hello, %s!", "World")
 		expected := "Hello, World!"
-
-		got, err := text.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Textf with escaped content", func(t *testing.T) {
-		text := Textf("Hello <b>%s</b>", "World")
+		node := Textf("Hello <b>%s</b>", "World")
 		expected := "Hello &lt;b&gt;World&lt;/b&gt;"
-
-		got, err := text.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Textf with empty content", func(t *testing.T) {
-		text := Textf("")
+		node := Textf("")
 		expected := ""
-
-		got, err := text.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestRaw(t *testing.T) {
 	t.Run("Raw with content", func(t *testing.T) {
-		raw := Raw("<script>alert('XSS');</script>")
+		node := Raw("<script>alert('XSS');</script>")
 		expected := "<script>alert('XSS');</script>"
-
-		got, err := raw.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Raw with empty content", func(t *testing.T) {
-		raw := Raw("")
+		node := Raw("")
 		expected := ""
-
-		got, err := raw.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
 func TestRawf(t *testing.T) {
 	t.Run("Rawf with formatted content", func(t *testing.T) {
-		raw := Rawf("<div>%s</div>", "Content")
+		node := Rawf("<div>%s</div>", "Content")
 		expected := "<div>Content</div>"
-
-		got, err := raw.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
@@ -216,19 +165,13 @@ func TestIf(t *testing.T) {
 	t.Run("If condition true", func(t *testing.T) {
 		node := If(true, Text("Hello"))
 		expected := "Hello"
-
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("If condition false", func(t *testing.T) {
 		node := If(false, Text("Hello"))
 		expected := ""
-
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
@@ -239,9 +182,7 @@ func TestIfFunc(t *testing.T) {
 		})
 		expected := "Hello"
 
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("IfFunc condition false", func(t *testing.T) {
@@ -250,9 +191,7 @@ func TestIfFunc(t *testing.T) {
 		})
 		expected := ""
 
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
 
@@ -264,9 +203,7 @@ func TestMap(t *testing.T) {
 		})
 		expected := "123"
 
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Map with strings", func(t *testing.T) {
@@ -276,9 +213,7 @@ func TestMap(t *testing.T) {
 		})
 		expected := "abc"
 
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Map with empty slice", func(t *testing.T) {
@@ -288,9 +223,7 @@ func TestMap(t *testing.T) {
 		})
 		expected := ""
 
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Complex map", func(t *testing.T) {
@@ -309,8 +242,6 @@ func TestMap(t *testing.T) {
 		}))
 		expected := `<div class="test"><span>Hello</span><span>World</span><span>!</span></div>`
 
-		got, err := node.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
