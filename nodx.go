@@ -94,3 +94,12 @@ func Map[T any](slice []T, function func(T) Node) Node {
 	}
 	return Group(nodes...)
 }
+
+// DocType Defines the document type.
+//
+// This is a special element and should be used inside a nodx.Group.
+//
+// Output: <!DOCTYPE html>
+func DocType() Node {
+	return Raw("<!DOCTYPE html>")
+}
