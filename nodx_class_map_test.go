@@ -144,4 +144,16 @@ func TestClassMap(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, got)
 	})
+
+	t.Run("Stringer interface", func(t *testing.T) {
+		cm := ClassMap{
+			"class1": true,
+			"class2": false,
+			"class3": true,
+		}
+		expected := ` class="class1 class3"`
+
+		got := cm.String()
+		assert.Equal(t, expected, got)
+	})
 }

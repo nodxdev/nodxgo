@@ -32,8 +32,6 @@ var _ Node = (*ClassMap)(nil)
 // This will render the class attribute as: class="odd-class always-on"
 type ClassMap map[string]bool
 
-// Render writes the "class" attribute to the provided writer.
-// It includes only the class names with a `true` value, sorted alphabetically.
 func (cm ClassMap) Render(w io.Writer) error {
 	classes := []string{}
 
@@ -49,8 +47,6 @@ func (cm ClassMap) Render(w io.Writer) error {
 	return Attr("class", classesStr).Render(w)
 }
 
-// RenderString returns the "class" attribute as a string.
-// It includes only the class names with a `true` value, sorted alphabetically.
 func (cm ClassMap) RenderString() (string, error) {
 	buf := &strings.Builder{}
 	err := cm.Render(buf)
@@ -60,8 +56,6 @@ func (cm ClassMap) RenderString() (string, error) {
 	return buf.String(), nil
 }
 
-// RenderBytes returns the "class" attribute as a byte slice.
-// It includes only the class names with a `true` value, sorted alphabetically.
 func (cm ClassMap) RenderBytes() ([]byte, error) {
 	buf := &bytes.Buffer{}
 	err := cm.Render(buf)
@@ -69,4 +63,17 @@ func (cm ClassMap) RenderBytes() ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func (cm ClassMap) IsElement() bool {
+	return false
+}
+
+func (cm ClassMap) IsAttribute() bool {
+	return true
+}
+
+func (cm ClassMap) String() string {
+	str, _ := cm.RenderString()
+	return str
 }
