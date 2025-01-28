@@ -132,4 +132,16 @@ func TestClassMap(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, got)
 	})
+
+	t.Run("Render inside a node", func(t *testing.T) {
+		template := El("div", ClassMap{
+			"class1": true,
+			"class2": false,
+		})
+		expected := `<div class="class1"></div>`
+
+		got, err := template.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
 }

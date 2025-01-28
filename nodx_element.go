@@ -45,6 +45,12 @@ func (ne nodeElement) Render(w io.Writer) error {
 				return err
 			}
 		}
+		if _, ok := child.(ClassMap); ok {
+			err = child.Render(w)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	_, err = fmt.Fprintf(w, ">")
