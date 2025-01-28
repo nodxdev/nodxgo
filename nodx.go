@@ -1,3 +1,8 @@
+// Package nodx is a modern and developer-friendly Go template engine for
+// generating safe, clean, and maintainable HTML. Designed for maximum
+// productivity and easy maintenance, it combines simplicity, type safety
+// and robust formatting, making it the perfect fit for your Go-based web
+// projects.
 package nodx
 
 import (
