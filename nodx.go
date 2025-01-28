@@ -3,6 +3,9 @@
 // productivity and easy maintenance, it combines simplicity, type safety
 // and robust formatting, making it the perfect fit for your Go-based web
 // projects.
+//
+// In NodX, everything is a node and anything that implements the Node interface
+// can be rendered as HTML or used as a Node child.
 package nodx
 
 import (
@@ -12,6 +15,8 @@ import (
 
 // Node is the interface that wraps the basic Render methods used in the
 // different NodX node types.
+//
+// Anything that implements this interface can be used as a node.
 type Node interface {
 	// Render writes the node HTML to the writer.
 	Render(w io.Writer) error
@@ -21,6 +26,20 @@ type Node interface {
 
 	// RenderBytes returns the node HTML as a byte slice.
 	RenderBytes() ([]byte, error)
+
+	// IsElement indicates if the node should be rendered as an element.
+	IsElement() bool
+
+	// IsAttribute indicates if the node should be rendered as an attribute.
+	IsAttribute() bool
+
+	// String returns the node HTML as a string and implements the fmt.Stringer interface.
+	//
+	// This is only for convenience and debugging purposes and it ignores the
+	// error return value.
+	//
+	// You should use RenderString() whenever possible.
+	String() string
 }
 
 // Group combines multiple nodes into a single node without wrapping them in any HTML tag.
