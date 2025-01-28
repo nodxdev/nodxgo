@@ -50,7 +50,7 @@ Start building your HTML with intuitive, type-safe functions:
 package main
 
 import (
-  "fmt"
+  "os"
   "github.com/nodxdev/nodxgo"
 )
 
@@ -63,7 +63,7 @@ func main() {
     nodx.DocType(),
     nodx.Html(
       nodx.Head(
-        nodx.Title("My NodX Page"),
+        nodx.TitleEl(nodx.Text("My NodX Page")),
       ),
       nodx.Body(
         nodx.Div(
@@ -82,7 +82,7 @@ func main() {
     ),
   )
 
-  _ := myTemplate.Render(os.Stdout)
+  _ = myTemplate.Render(os.Stdout)
   // or
   // str, err := myTemplate.RenderString()
   // byt, err := myTemplate.RenderBytes()
