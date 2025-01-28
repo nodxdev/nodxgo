@@ -10,7 +10,16 @@ import (
 // ensure that group implements the Node interface.
 var _ Node = (*nodeGroup)(nil)
 
-// nodeGroup represents a group of nodes.
+// nodeGroup is a special Node that represents a group of nodes.
+//
+// When rendered directly, it will call Render on all the nodes in the group
+// sequentially.
+//
+// When used as a child of another node, it will be expanded so that the nodes
+// in the group become children of the group's parent.
+//
+// This is not an element nor an attribute and should be treated specially when
+// needed.
 type nodeGroup []Node
 
 // newNodeGroup creates a new group of nodes.
@@ -18,7 +27,6 @@ func newNodeGroup(nodes ...Node) nodeGroup {
 	return nodeGroup(nodes)
 }
 
-// Render writes the group of nodes to the writer.
 func (g nodeGroup) Render(w io.Writer) error {
 	for _, node := range g {
 		if node == nil {
@@ -31,16 +39,27 @@ func (g nodeGroup) Render(w io.Writer) error {
 	return nil
 }
 
-// RenderString returns the group of nodes as a string.
 func (g nodeGroup) RenderString() (string, error) {
 	buf := &strings.Builder{}
 	err := g.Render(buf)
 	return buf.String(), err
 }
 
-// RenderBytes returns the group of nodes as a byte slice.
 func (g nodeGroup) RenderBytes() ([]byte, error) {
 	buf := &bytes.Buffer{}
 	err := g.Render(buf)
 	return buf.Bytes(), err
+}
+
+func (g nodeGroup) IsElement() bool {
+	return false
+}
+
+func (g nodeGroup) IsAttribute() bool {
+	return false
+}
+
+func (g nodeGroup) String() string {
+	str, _ := g.RenderString()
+	return str
 }

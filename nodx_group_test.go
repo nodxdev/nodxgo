@@ -8,7 +8,7 @@ import (
 )
 
 func TestNodeGroup(t *testing.T) {
-	t.Run("Render empty group", func(t *testing.T) {
+	t.Run("Render empty", func(t *testing.T) {
 		group := newNodeGroup()
 		buf := &bytes.Buffer{}
 
@@ -17,7 +17,7 @@ func TestNodeGroup(t *testing.T) {
 		assert.Equal(t, "", buf.String())
 	})
 
-	t.Run("Render group with single text node", func(t *testing.T) {
+	t.Run("Render", func(t *testing.T) {
 		group := newNodeGroup(newNodeText("Hello, World!"))
 		expected := "Hello, World!"
 		buf := &bytes.Buffer{}
@@ -25,6 +25,28 @@ func TestNodeGroup(t *testing.T) {
 		err := group.Render(buf)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, buf.String())
+	})
+
+	t.Run("Render String", func(t *testing.T) {
+		group := newNodeGroup(newNodeText("Hello, World!"))
+		expected := "Hello, World!"
+		got, err := group.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
+
+	t.Run("Render Bytes", func(t *testing.T) {
+		group := newNodeGroup(newNodeText("Hello, World!"))
+		expected := "Hello, World!"
+		got, err := group.RenderBytes()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, string(got))
+	})
+
+	t.Run("Render Stringer Interface", func(t *testing.T) {
+		group := newNodeGroup(newNodeText("Hello, World!"))
+		expected := "Hello, World!"
+		assert.Equal(t, expected, group.String())
 	})
 
 	t.Run("Render group with multiple text nodes", func(t *testing.T) {
@@ -127,5 +149,49 @@ func TestNodeGroup(t *testing.T) {
 		got, err := group.RenderBytes()
 		assert.NoError(t, err)
 		assert.Equal(t, expected, string(got))
+	})
+
+	t.Run("Expand group as div child element", func(t *testing.T) {
+		template := El(
+			"div",
+			newNodeGroup(
+				newNodeText("Hello, World!"),
+			),
+		)
+		expected := "<div>Hello, World!</div>"
+
+		got, err := template.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
+
+	t.Run("Expand group as div child attribute", func(t *testing.T) {
+		template := El(
+			"div",
+			newNodeGroup(
+				Attr("class", "test"),
+			),
+			newNodeText("Hello, World!"),
+		)
+		expected := `<div class="test">Hello, World!</div>`
+
+		got, err := template.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
+
+	t.Run("Expand group as div child element and attribute", func(t *testing.T) {
+		template := El(
+			"div",
+			newNodeGroup(
+				Attr("class", "test"),
+				newNodeText("Hello, World!"),
+			),
+		)
+		expected := `<div class="test">Hello, World!</div>`
+
+		got, err := template.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
 	})
 }
