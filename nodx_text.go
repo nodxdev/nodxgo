@@ -26,7 +26,6 @@ func newNodeText(text string) nodeText {
 	}
 }
 
-// Render writes the text to the writer.
 func (nt nodeText) Render(w io.Writer) error {
 	if nt.text == "" {
 		return nil
@@ -35,12 +34,22 @@ func (nt nodeText) Render(w io.Writer) error {
 	return err
 }
 
-// RenderString returns the text as a string.
 func (nt nodeText) RenderString() (string, error) {
 	return nt.text, nil
 }
 
-// RenderBytes returns the text as a byte slice.
 func (nt nodeText) RenderBytes() ([]byte, error) {
 	return []byte(nt.text), nil
+}
+
+func (nt nodeText) IsElement() bool {
+	return true
+}
+
+func (nt nodeText) IsAttribute() bool {
+	return false
+}
+
+func (nt nodeText) String() string {
+	return nt.text
 }

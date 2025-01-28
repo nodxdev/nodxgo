@@ -53,4 +53,10 @@ func TestNodeText(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, "", buf.String())
 	})
+
+	t.Run("Text Stringer interface", func(t *testing.T) {
+		text := "Hello, World!"
+		node := newNodeText(text)
+		assert.Equal(t, text, node.String())
+	})
 }
