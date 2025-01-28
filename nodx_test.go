@@ -292,4 +292,25 @@ func TestMap(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, got)
 	})
+
+	t.Run("Complex map", func(t *testing.T) {
+		slice := []int{1, 2, 3, 4}
+		node := El("div", Map(slice, func(i int) Node {
+			if i == 1 {
+				return El("span", Text("Hello"))
+			}
+			if i == 2 {
+				return Attr("class", "test")
+			}
+			if i == 3 {
+				return El("span", Text("World"))
+			}
+			return El("span", Text("!"))
+		}))
+		expected := `<div class="test"><span>Hello</span><span>World</span><span>!</span></div>`
+
+		got, err := node.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
 }
