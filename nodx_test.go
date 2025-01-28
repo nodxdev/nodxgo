@@ -315,4 +315,41 @@ func TestMap(t *testing.T) {
 
 		assert.RenderNoSpaces(t, expected, node)
 	})
+
+	t.Run("Eval", func(t *testing.T) {
+		node := Eval(func() Node {
+			str := "World"
+			return Textf("Hello, %s!", str)
+		})
+		expected := "Hello, World!"
+		assert.Render(t, expected, node)
+	})
+
+	t.Run("Eval as child", func(t *testing.T) {
+		node := Div(
+			Class("container"),
+			Eval(func() Node {
+				return Text("Hello, World!")
+			}),
+		)
+		expected := `<div class="container">Hello, World!</div>`
+		assert.Render(t, expected, node)
+	})
+
+	t.Run("Nested Eval", func(t *testing.T) {
+		node := Div(
+			Class("container"),
+			Eval(func() Node {
+				return Eval(func() Node {
+					return Eval(func() Node {
+						return Eval(func() Node {
+							return Text("Hello, World!")
+						})
+					})
+				})
+			}),
+		)
+		expected := `<div class="container">Hello, World!</div>`
+		assert.Render(t, expected, node)
+	})
 }

@@ -124,6 +124,27 @@ func Map[T any](slice []T, function func(T) Node) Node {
 	return Group(nodes...)
 }
 
+// Eval executes a provided function and integrates its resulting Node into the current node tree.
+//
+// Use Eval to insert dynamic content, apply complex logic, or generate nodes on the fly.
+//
+// Example:
+//
+//	node := nodx.Group(
+//		nodx.Div(
+//		  nodx.Class("container"),
+//		  nodx.Eval(func() nodx.Node {
+//		    if condition {
+//		      return nodx.Text("Condition is true")
+//		    }
+//		    return nodx.Text("Condition is false")
+//		  }),
+//		),
+//	)
+func Eval(fn func() Node) Node {
+	return fn()
+}
+
 // DocType Defines the document type.
 //
 // This is a special element and should be used inside a nodx.Group.
