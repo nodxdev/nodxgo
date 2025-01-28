@@ -32,7 +32,7 @@ func Applet(children ...Node) Node {
 
 // Area Defines an area inside an image-map.
 //
-// Output: <area .../>
+// Output: <area ...>
 func Area(children ...Node) Node {
 	return ElVoid("area", children...)
 }
@@ -67,7 +67,7 @@ func B(children ...Node) Node {
 
 // Base Specifies the base URL for all relative URLs in a document.
 //
-// Output: <base .../>
+// Output: <base ...>
 func Base(children ...Node) Node {
 	return ElVoid("base", children...)
 }
@@ -109,7 +109,7 @@ func Body(children ...Node) Node {
 
 // Br Inserts a single line break.
 //
-// Output: <br .../>
+// Output: <br ...>
 func Br(children ...Node) Node {
 	return ElVoid("br", children...)
 }
@@ -158,7 +158,7 @@ func CodeEl(children ...Node) Node {
 
 // Col Specifies column properties for each column within a colgroup element.
 //
-// Output: <col .../>
+// Output: <col ...>
 func Col(children ...Node) Node {
 	return ElVoid("col", children...)
 }
@@ -256,7 +256,7 @@ func Em(children ...Node) Node {
 
 // Embed Defines a container for an external application or interactive content.
 //
-// Output: <embed .../>
+// Output: <embed ...>
 func Embed(children ...Node) Node {
 	return ElVoid("embed", children...)
 }
@@ -375,7 +375,7 @@ func Header(children ...Node) Node {
 
 // Hr Defines a thematic change in the content.
 //
-// Output: <hr .../>
+// Output: <hr ...>
 func Hr(children ...Node) Node {
 	return ElVoid("hr", children...)
 }
@@ -403,14 +403,14 @@ func Iframe(children ...Node) Node {
 
 // Img Defines an image.
 //
-// Output: <img .../>
+// Output: <img ...>
 func Img(children ...Node) Node {
 	return ElVoid("img", children...)
 }
 
 // Input Defines an input control.
 //
-// Output: <input .../>
+// Output: <input ...>
 func Input(children ...Node) Node {
 	return ElVoid("input", children...)
 }
@@ -452,7 +452,7 @@ func Li(children ...Node) Node {
 
 // Link Defines the relationship between a document and an external resource.
 //
-// Output: <link .../>
+// Output: <link ...>
 func Link(children ...Node) Node {
 	return ElVoid("link", children...)
 }
@@ -480,7 +480,7 @@ func Mark(children ...Node) Node {
 
 // Meta Defines metadata about an HTML document.
 //
-// Output: <meta .../>
+// Output: <meta ...>
 func Meta(children ...Node) Node {
 	return ElVoid("meta", children...)
 }
@@ -557,7 +557,7 @@ func P(children ...Node) Node {
 
 // Param Defines a parameter for an object.
 //
-// Output: <param .../>
+// Output: <param ...>
 func Param(children ...Node) Node {
 	return ElVoid("param", children...)
 }
@@ -676,7 +676,7 @@ func Small(children ...Node) Node {
 
 // Source Defines multiple media resources for media elements.
 //
-// Output: <source .../>
+// Output: <source ...>
 func Source(children ...Node) Node {
 	return ElVoid("source", children...)
 }
@@ -816,7 +816,7 @@ func Tr(children ...Node) Node {
 
 // Track Defines text tracks for media elements.
 //
-// Output: <track .../>
+// Output: <track ...>
 func Track(children ...Node) Node {
 	return ElVoid("track", children...)
 }
@@ -858,7 +858,7 @@ func Video(children ...Node) Node {
 
 // Wbr Defines a possible line-break.
 //
-// Output: <wbr .../>
+// Output: <wbr ...>
 func Wbr(children ...Node) Node {
 	return ElVoid("wbr", children...)
 }

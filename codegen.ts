@@ -54,7 +54,7 @@ function generateElements(els: El[], attrs: Attr[]) {
     if (el.isVoid) {
       fileContent.push(`// ${funcName.name} ${el.description}`);
       fileContent.push(`//`);
-      fileContent.push(`// Output: <${el.name} .../>`);
+      fileContent.push(`// Output: <${el.name} ...>`);
       fileContent.push(`func ${funcName.name}(children ...Node) Node {`);
       fileContent.push(`\treturn ElVoid("${el.name}", children...)`);
       fileContent.push(`}`);
