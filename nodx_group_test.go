@@ -1,7 +1,6 @@
 package nodx
 
 import (
-	"bytes"
 	"testing"
 
 	"github.com/nodxdev/nodxgo/internal/assert"
@@ -9,116 +8,69 @@ import (
 
 func TestNodeGroup(t *testing.T) {
 	t.Run("Render empty", func(t *testing.T) {
-		group := newNodeGroup()
-		buf := &bytes.Buffer{}
-
-		err := group.Render(buf)
-		assert.NoError(t, err)
-		assert.Equal(t, "", buf.String())
+		node := newNodeGroup()
+		expected := ""
+		assert.Render(t, expected, node)
 	})
 
-	t.Run("Render", func(t *testing.T) {
-		group := newNodeGroup(newNodeText("Hello, World!"))
+	t.Run("Render basic", func(t *testing.T) {
+		node := newNodeGroup(newNodeText("Hello, World!"))
 		expected := "Hello, World!"
-		buf := &bytes.Buffer{}
-
-		err := group.Render(buf)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, buf.String())
-	})
-
-	t.Run("Render String", func(t *testing.T) {
-		group := newNodeGroup(newNodeText("Hello, World!"))
-		expected := "Hello, World!"
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
-	})
-
-	t.Run("Render Bytes", func(t *testing.T) {
-		group := newNodeGroup(newNodeText("Hello, World!"))
-		expected := "Hello, World!"
-		got, err := group.RenderBytes()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, string(got))
-	})
-
-	t.Run("Render Stringer Interface", func(t *testing.T) {
-		group := newNodeGroup(newNodeText("Hello, World!"))
-		expected := "Hello, World!"
-		assert.Equal(t, expected, group.String())
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Render group with multiple text nodes", func(t *testing.T) {
-		group := newNodeGroup(
+		node := newNodeGroup(
 			newNodeText("Hello"),
 			newNodeText(", "),
 			newNodeText("World!"),
 		)
 		expected := "Hello, World!"
-		buf := &bytes.Buffer{}
-
-		err := group.Render(buf)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, buf.String())
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Render group with mixed nodes", func(t *testing.T) {
-		group := newNodeGroup(
+		node := newNodeGroup(
 			newNodeText("Hello, "),
 			newNodeElement(false, "strong", newNodeText("World")),
 			newNodeText("!"),
 		)
 		expected := "Hello, <strong>World</strong>!"
-		buf := &bytes.Buffer{}
-
-		err := group.Render(buf)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, buf.String())
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Render group with nil node", func(t *testing.T) {
-		group := newNodeGroup(
+		node := newNodeGroup(
 			newNodeText("Hello"),
 			nil,
 			newNodeText(", World!"),
 		)
 		expected := "Hello, World!"
-		buf := &bytes.Buffer{}
-
-		err := group.Render(buf)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, buf.String())
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("RenderString for group", func(t *testing.T) {
-		group := newNodeGroup(
+		node := newNodeGroup(
 			newNodeText("Hello"),
 			newNodeText(", "),
 			newNodeText("World!"),
 		)
 		expected := "Hello, World!"
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("RenderBytes for group", func(t *testing.T) {
-		group := newNodeGroup(
+		node := newNodeGroup(
 			newNodeText("Hello"),
 			newNodeText(", "),
 			newNodeText("World!"),
 		)
 		expected := "Hello, World!"
-
-		got, err := group.RenderBytes()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, string(got))
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Group with nested groups", func(t *testing.T) {
-		group := newNodeGroup(
+		node := newNodeGroup(
 			newNodeGroup(
 				newNodeText("Hello, "),
 				newNodeElement(false, "strong", newNodeText("World")),
@@ -126,47 +78,34 @@ func TestNodeGroup(t *testing.T) {
 			newNodeText("!"),
 		)
 		expected := "Hello, <strong>World</strong>!"
-
-		buf := &bytes.Buffer{}
-		err := group.Render(buf)
-		assert.NoError(t, err)
-		assert.Equal(t, expected, buf.String())
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Empty group RenderString", func(t *testing.T) {
-		group := newNodeGroup()
+		node := newNodeGroup()
 		expected := ""
-
-		got, err := group.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Empty group RenderBytes", func(t *testing.T) {
-		group := newNodeGroup()
+		node := newNodeGroup()
 		expected := ""
-
-		got, err := group.RenderBytes()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, string(got))
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Expand group as div child element", func(t *testing.T) {
-		template := El(
+		node := El(
 			"div",
 			newNodeGroup(
 				newNodeText("Hello, World!"),
 			),
 		)
 		expected := "<div>Hello, World!</div>"
-
-		got, err := template.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Expand group as div child attribute", func(t *testing.T) {
-		template := El(
+		node := El(
 			"div",
 			newNodeGroup(
 				Attr("class", "test"),
@@ -174,14 +113,11 @@ func TestNodeGroup(t *testing.T) {
 			newNodeText("Hello, World!"),
 		)
 		expected := `<div class="test">Hello, World!</div>`
-
-		got, err := template.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Expand group as div child element and attribute", func(t *testing.T) {
-		template := El(
+		node := El(
 			"div",
 			newNodeGroup(
 				Attr("class", "test"),
@@ -189,14 +125,11 @@ func TestNodeGroup(t *testing.T) {
 			),
 		)
 		expected := `<div class="test">Hello, World!</div>`
-
-		got, err := template.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 
 	t.Run("Expand complex nested group", func(t *testing.T) {
-		template := Div(
+		node := Div(
 			Class("test1"),
 			Group(
 				Div(
@@ -215,9 +148,6 @@ func TestNodeGroup(t *testing.T) {
 			SpanEl(Text("Hello, World!")),
 		)
 		expected := `<div class="test1"><div class="test2"><span>Hello, </span><span>World!</span><span>NodX</span></div><span>Hello, World!</span></div>`
-
-		got, err := template.RenderString()
-		assert.NoError(t, err)
-		assert.Equal(t, expected, got)
+		assert.Render(t, expected, node)
 	})
 }
