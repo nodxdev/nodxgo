@@ -26,8 +26,6 @@ var _ Node = (*StyleMap)(nil)
 // This will render the style attribute as: style="border: 1px solid black; margin: 5px"
 type StyleMap map[string]bool
 
-// Render writes the "style" attribute to the provided writer.
-// It includes only the style rules with a `true` value, sorted alphabetically.
 func (sm StyleMap) Render(w io.Writer) error {
 	styles := []string{}
 
@@ -43,8 +41,6 @@ func (sm StyleMap) Render(w io.Writer) error {
 	return Attr("style", stylesStr).Render(w)
 }
 
-// RenderString returns the "style" attribute as a string.
-// It includes only the style rules with a `true` value, sorted alphabetically.
 func (sm StyleMap) RenderString() (string, error) {
 	buf := &strings.Builder{}
 	err := sm.Render(buf)
@@ -54,8 +50,6 @@ func (sm StyleMap) RenderString() (string, error) {
 	return buf.String(), nil
 }
 
-// RenderBytes returns the "style" attribute as a byte slice.
-// It includes only the style rules with a `true` value, sorted alphabetically.
 func (sm StyleMap) RenderBytes() ([]byte, error) {
 	buf := &bytes.Buffer{}
 	err := sm.Render(buf)
@@ -63,4 +57,17 @@ func (sm StyleMap) RenderBytes() ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func (sm StyleMap) IsElement() bool {
+	return false
+}
+
+func (sm StyleMap) IsAttribute() bool {
+	return true
+}
+
+func (sm StyleMap) String() string {
+	str, _ := sm.RenderString()
+	return str
 }

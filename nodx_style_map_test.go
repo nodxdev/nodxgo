@@ -130,4 +130,16 @@ func TestStyleMap(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, got)
 	})
+
+	t.Run("Stringer interface", func(t *testing.T) {
+		sm := StyleMap{
+			"border: 1px solid black": true,
+			"padding: 20px":           false,
+			"margin: 5px":             true,
+		}
+		expected := ` style="border: 1px solid black; margin: 5px"`
+
+		got := sm.String()
+		assert.Equal(t, expected, got)
+	})
 }
