@@ -31,6 +31,16 @@ func TestNodeAttribute(t *testing.T) {
 		assert.Equal(t, expected, got)
 	})
 
+	t.Run("Attribute stringer interface", func(t *testing.T) {
+		key := "class"
+		value := "container"
+		expected := ` class="container"`
+
+		node := newNodeAttribute(key, value)
+		got := node.String()
+		assert.Equal(t, expected, got)
+	})
+
 	t.Run("Attribute render bytes", func(t *testing.T) {
 		key := "class"
 		value := "container"

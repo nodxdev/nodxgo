@@ -16,7 +16,6 @@ type nodeAttribute struct {
 	value string
 }
 
-// newNodeAttribute creates a new HTML attribute.
 func newNodeAttribute(name, value string) nodeAttribute {
 	return nodeAttribute{
 		name:  name,
@@ -24,7 +23,6 @@ func newNodeAttribute(name, value string) nodeAttribute {
 	}
 }
 
-// Render writes the HTML attribute to the writer.
 func (na nodeAttribute) Render(w io.Writer) error {
 	if na.name == "" {
 		return nil
@@ -33,7 +31,6 @@ func (na nodeAttribute) Render(w io.Writer) error {
 	return err
 }
 
-// RenderString returns the HTML attribute as a string.
 func (na nodeAttribute) RenderString() (string, error) {
 	buf := &strings.Builder{}
 	err := na.Render(buf)
@@ -43,7 +40,6 @@ func (na nodeAttribute) RenderString() (string, error) {
 	return buf.String(), nil
 }
 
-// RenderBytes returns the HTML attribute as a byte slice.
 func (na nodeAttribute) RenderBytes() ([]byte, error) {
 	buf := &bytes.Buffer{}
 	err := na.Render(buf)
@@ -51,4 +47,17 @@ func (na nodeAttribute) RenderBytes() ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func (na nodeAttribute) IsElement() bool {
+	return false
+}
+
+func (na nodeAttribute) IsAttribute() bool {
+	return true
+}
+
+func (na nodeAttribute) String() string {
+	str, _ := na.RenderString()
+	return str
 }
