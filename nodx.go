@@ -43,7 +43,12 @@ type Node interface {
 }
 
 // Group combines multiple nodes into a single node without wrapping them in any HTML tag.
-// It renders the child nodes directly.
+//
+// When rendered directly, it will call Render on all the nodes in the group
+// sequentially.
+//
+// When used as a child of another node, it will be expanded so that the nodes
+// in the group become children of the group's parent.
 func Group(nodes ...Node) Node {
 	return newNodeGroup(nodes...)
 }
