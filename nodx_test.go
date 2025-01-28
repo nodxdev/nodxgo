@@ -115,7 +115,7 @@ func TestElVoid(t *testing.T) {
 func TestAttr(t *testing.T) {
 	t.Run("Attr with value", func(t *testing.T) {
 		attr := Attr("class", "container")
-		expected := ` class="container"`
+		expected := `class="container"`
 
 		got, err := attr.RenderString()
 		assert.NoError(t, err)
@@ -124,7 +124,7 @@ func TestAttr(t *testing.T) {
 
 	t.Run("Attr with empty value", func(t *testing.T) {
 		attr := Attr("class", "")
-		expected := ` class=""`
+		expected := `class=""`
 
 		got, err := attr.RenderString()
 		assert.NoError(t, err)

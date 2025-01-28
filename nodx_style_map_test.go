@@ -9,7 +9,7 @@ import (
 func TestStyleMap(t *testing.T) {
 	t.Run("Render empty StyleMap", func(t *testing.T) {
 		sm := StyleMap{}
-		expected := ` style=""`
+		expected := `style=""`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -20,7 +20,7 @@ func TestStyleMap(t *testing.T) {
 		sm := StyleMap{
 			"border: 1px solid black": true,
 		}
-		expected := ` style="border: 1px solid black"`
+		expected := `style="border: 1px solid black"`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -33,7 +33,7 @@ func TestStyleMap(t *testing.T) {
 			"margin: 10px":            true,
 			"color: red":              true,
 		}
-		expected := ` style="border: 1px solid black; color: red; margin: 10px"`
+		expected := `style="border: 1px solid black; color: red; margin: 10px"`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -47,7 +47,7 @@ func TestStyleMap(t *testing.T) {
 			"margin: 10px":            true,
 			"color: red":              false,
 		}
-		expected := ` style="border: 1px solid black; margin: 10px"`
+		expected := `style="border: 1px solid black; margin: 10px"`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -60,7 +60,7 @@ func TestStyleMap(t *testing.T) {
 			"border: 1px": true,
 			"margin: 5px": true,
 		}
-		expected := ` style="border: 1px; margin: 5px; z-index: 1"`
+		expected := `style="border: 1px; margin: 5px; z-index: 1"`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -72,7 +72,7 @@ func TestStyleMap(t *testing.T) {
 			"border: 1px solid black": true,
 			"margin: 10px":            true,
 		}
-		expected := ` style="border: 1px solid black; margin: 10px"`
+		expected := `style="border: 1px solid black; margin: 10px"`
 
 		got, err := sm.RenderBytes()
 		assert.NoError(t, err)
@@ -84,7 +84,7 @@ func TestStyleMap(t *testing.T) {
 			"border: 1px solid black": false,
 			"margin: 10px":            false,
 		}
-		expected := ` style=""`
+		expected := `style=""`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -96,7 +96,7 @@ func TestStyleMap(t *testing.T) {
 			"content: 'Hello, World!'": true,
 			"font-size: 16px":          true,
 		}
-		expected := ` style="content: &#39;Hello, World!&#39;; font-size: 16px"`
+		expected := `style="content: &#39;Hello, World!&#39;; font-size: 16px"`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -112,7 +112,7 @@ func TestStyleMap(t *testing.T) {
 			"padding: 20px":           showPadding,
 			"margin: 5px":             true,
 		}
-		expected := ` style="border: 1px solid black; margin: 5px"`
+		expected := `style="border: 1px solid black; margin: 5px"`
 
 		got, err := sm.RenderString()
 		assert.NoError(t, err)
@@ -137,7 +137,7 @@ func TestStyleMap(t *testing.T) {
 			"padding: 20px":           false,
 			"margin: 5px":             true,
 		}
-		expected := ` style="border: 1px solid black; margin: 5px"`
+		expected := `style="border: 1px solid black; margin: 5px"`
 
 		got := sm.String()
 		assert.Equal(t, expected, got)

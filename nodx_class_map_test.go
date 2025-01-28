@@ -9,7 +9,7 @@ import (
 func TestClassMap(t *testing.T) {
 	t.Run("Render empty ClassMap", func(t *testing.T) {
 		cm := ClassMap{}
-		expected := ` class=""`
+		expected := `class=""`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -20,7 +20,7 @@ func TestClassMap(t *testing.T) {
 		cm := ClassMap{
 			"class1": true,
 		}
-		expected := ` class="class1"`
+		expected := `class="class1"`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -33,7 +33,7 @@ func TestClassMap(t *testing.T) {
 			"class2": true,
 			"class3": true,
 		}
-		expected := ` class="class1 class2 class3"`
+		expected := `class="class1 class2 class3"`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -47,7 +47,7 @@ func TestClassMap(t *testing.T) {
 			"class3": true,
 			"class4": false,
 		}
-		expected := ` class="class1 class3"`
+		expected := `class="class1 class3"`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -66,7 +66,7 @@ func TestClassMap(t *testing.T) {
 			"even-class": renderEven,
 			"always-on":  true,
 		}
-		expected := ` class="always-on odd-class"`
+		expected := `class="always-on odd-class"`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -79,7 +79,7 @@ func TestClassMap(t *testing.T) {
 			"a-class": true,
 			"m-class": true,
 		}
-		expected := ` class="a-class m-class z-class"`
+		expected := `class="a-class m-class z-class"`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -92,7 +92,7 @@ func TestClassMap(t *testing.T) {
 			"class2": false,
 			"class3": true,
 		}
-		expected := ` class="class1 class3"`
+		expected := `class="class1 class3"`
 
 		got, err := cm.RenderBytes()
 		assert.NoError(t, err)
@@ -101,7 +101,7 @@ func TestClassMap(t *testing.T) {
 
 	t.Run("Render to empty writer", func(t *testing.T) {
 		cm := ClassMap{}
-		expected := ` class=""`
+		expected := `class=""`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -113,7 +113,7 @@ func TestClassMap(t *testing.T) {
 			"class1": false,
 			"class2": false,
 		}
-		expected := ` class=""`
+		expected := `class=""`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -126,7 +126,7 @@ func TestClassMap(t *testing.T) {
 			"class_2": true,
 			"3class":  true,
 		}
-		expected := ` class="3class class-1 class_2"`
+		expected := `class="3class class-1 class_2"`
 
 		got, err := cm.RenderString()
 		assert.NoError(t, err)
@@ -151,7 +151,7 @@ func TestClassMap(t *testing.T) {
 			"class2": false,
 			"class3": true,
 		}
-		expected := ` class="class1 class3"`
+		expected := `class="class1 class3"`
 
 		got := cm.String()
 		assert.Equal(t, expected, got)

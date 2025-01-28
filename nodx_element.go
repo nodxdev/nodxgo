@@ -71,6 +71,12 @@ func (ne nodeElement) Render(w io.Writer) error {
 	}
 
 	for _, attr := range attrs {
+		// Add a space between each attribute.
+		_, err = fmt.Fprintf(w, " ")
+		if err != nil {
+			return err
+		}
+
 		err = attr.Render(w)
 		if err != nil {
 			return err

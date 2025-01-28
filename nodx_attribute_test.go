@@ -11,7 +11,7 @@ func TestNodeAttribute(t *testing.T) {
 	t.Run("Attribute render", func(t *testing.T) {
 		key := "class"
 		value := "container"
-		expected := ` class="container"`
+		expected := `class="container"`
 
 		node := newNodeAttribute(key, value)
 		buf := new(bytes.Buffer)
@@ -23,7 +23,7 @@ func TestNodeAttribute(t *testing.T) {
 	t.Run("Attribute render string", func(t *testing.T) {
 		key := "class"
 		value := "container"
-		expected := ` class="container"`
+		expected := `class="container"`
 
 		node := newNodeAttribute(key, value)
 		got, err := node.RenderString()
@@ -34,7 +34,7 @@ func TestNodeAttribute(t *testing.T) {
 	t.Run("Attribute stringer interface", func(t *testing.T) {
 		key := "class"
 		value := "container"
-		expected := ` class="container"`
+		expected := `class="container"`
 
 		node := newNodeAttribute(key, value)
 		got := node.String()
@@ -44,7 +44,7 @@ func TestNodeAttribute(t *testing.T) {
 	t.Run("Attribute render bytes", func(t *testing.T) {
 		key := "class"
 		value := "container"
-		expected := ` class="container"`
+		expected := `class="container"`
 
 		node := newNodeAttribute(key, value)
 		got, err := node.RenderBytes()
@@ -55,7 +55,7 @@ func TestNodeAttribute(t *testing.T) {
 	t.Run("Empty value attribute render", func(t *testing.T) {
 		key := "class"
 		value := ""
-		expected := ` class=""`
+		expected := `class=""`
 
 		node := newNodeAttribute(key, value)
 		got, err := node.RenderString()
@@ -88,7 +88,7 @@ func TestNodeAttribute(t *testing.T) {
 	t.Run("Double quote in value attribute render", func(t *testing.T) {
 		key := "class"
 		value := `container"container'container`
-		expected := ` class="container&quot;container&#39;container"`
+		expected := `class="container&quot;container&#39;container"`
 
 		node := newNodeAttribute(key, value)
 		got, err := node.RenderString()

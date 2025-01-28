@@ -27,7 +27,7 @@ func (na nodeAttribute) Render(w io.Writer) error {
 	if na.name == "" {
 		return nil
 	}
-	_, err := fmt.Fprintf(w, " %s=\"%s\"", na.name, EscapeHTML(na.value))
+	_, err := fmt.Fprintf(w, "%s=\"%s\"", na.name, EscapeHTML(na.value))
 	return err
 }
 
