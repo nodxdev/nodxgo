@@ -39,13 +39,8 @@ func (ne nodeElement) Render(w io.Writer) error {
 
 	// Render only nodeAttributes
 	for _, child := range ne.children {
-		if _, ok := child.(nodeAttribute); ok {
-			err = child.Render(w)
-			if err != nil {
-				return err
-			}
-		}
-		if _, ok := child.(ClassMap); ok {
+		switch child.(type) {
+		case nodeAttribute, ClassMap, StyleMap:
 			err = child.Render(w)
 			if err != nil {
 				return err
@@ -61,14 +56,8 @@ func (ne nodeElement) Render(w io.Writer) error {
 	if !ne.isVoid {
 		// Render only nodeElements and nodeTexts
 		for _, child := range ne.children {
-			if _, ok := child.(nodeElement); ok {
-				err = child.Render(w)
-				if err != nil {
-					return err
-				}
-				continue
-			}
-			if _, ok := child.(nodeText); ok {
+			switch child.(type) {
+			case nodeElement, nodeText:
 				err = child.Render(w)
 				if err != nil {
 					return err

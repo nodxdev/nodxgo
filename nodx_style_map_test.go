@@ -118,4 +118,16 @@ func TestStyleMap(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, got)
 	})
+
+	t.Run("Render inside a node", func(t *testing.T) {
+		template := El("div", StyleMap{
+			"border: 1px solid black": true,
+			"margin: 5px":             false,
+		})
+		expected := `<div style="border: 1px solid black"></div>`
+
+		got, err := template.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
 }
