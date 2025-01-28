@@ -91,7 +91,7 @@ func TestEl(t *testing.T) {
 func TestElVoid(t *testing.T) {
 	t.Run("ElVoid with no children", func(t *testing.T) {
 		elVoid := ElVoid("img")
-		expected := "<img/>"
+		expected := "<img>"
 
 		got, err := elVoid.RenderString()
 		assert.NoError(t, err)
@@ -104,7 +104,7 @@ func TestElVoid(t *testing.T) {
 			Attr("class", "container"),
 			Text("Ignored"),
 		)
-		expected := `<img class="container"/>`
+		expected := `<img class="container">`
 
 		got, err := elVoid.RenderString()
 		assert.NoError(t, err)

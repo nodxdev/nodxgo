@@ -41,7 +41,7 @@ func TestNodeElement(t *testing.T) {
 
 	t.Run("Basic void element", func(t *testing.T) {
 		tag := "img"
-		expected := "<img/>"
+		expected := "<img>"
 
 		node := newNodeElement(true, tag)
 		got, err := node.RenderString()
@@ -67,7 +67,7 @@ func TestNodeElement(t *testing.T) {
 		children := []Node{
 			newNodeText("Hello, World!"),
 		}
-		expected := "<link/>"
+		expected := "<link>"
 
 		node := newNodeElement(true, tag, children...)
 		got, err := node.RenderString()
@@ -95,7 +95,7 @@ func TestNodeElement(t *testing.T) {
 			newNodeAttribute("src", "image.jpg"),
 			newNodeAttribute("alt", "Image"),
 		}
-		expected := `<img src="image.jpg" alt="Image"/>`
+		expected := `<img src="image.jpg" alt="Image">`
 
 		node := newNodeElement(true, tag, children...)
 		got, err := node.RenderString()
@@ -125,7 +125,7 @@ func TestNodeElement(t *testing.T) {
 			newNodeAttribute("href", "style.css"),
 			newNodeText("This will be ignored"),
 		}
-		expected := `<link rel="stylesheet" href="style.css"/>`
+		expected := `<link rel="stylesheet" href="style.css">`
 
 		node := newNodeElement(true, tag, children...)
 		got, err := node.RenderString()
@@ -159,7 +159,7 @@ func TestNodeElement(t *testing.T) {
 			newNodeAttribute("alt", "Image"),
 			newNodeText("This will also be ignored"),
 		}
-		expected := `<img src="image.jpg" alt="Image"/>`
+		expected := `<img src="image.jpg" alt="Image">`
 
 		node := newNodeElement(true, tag, children...)
 		got, err := node.RenderString()
@@ -245,7 +245,7 @@ func TestNodeElement(t *testing.T) {
 				),
 			),
 		}
-		expected := "<html><head><title>Hello, World!</title><meta charset=\"UTF-8\"/></head><body><div class=\"container\"><h1>Hello, World!</h1><p>This is a paragraph.</p></div></body></html>"
+		expected := "<html><head><title>Hello, World!</title><meta charset=\"UTF-8\"></head><body><div class=\"container\"><h1>Hello, World!</h1><p>This is a paragraph.</p></div></body></html>"
 
 		node := newNodeElement(false, tag, children...)
 		got, err := node.RenderString()

@@ -47,19 +47,12 @@ func (ne nodeElement) Render(w io.Writer) error {
 		}
 	}
 
-	if ne.isVoid {
-		_, err = fmt.Fprintf(w, "/>")
-		if err != nil {
-			return err
-		}
+	_, err = fmt.Fprintf(w, ">")
+	if err != nil {
+		return err
 	}
 
 	if !ne.isVoid {
-		_, err = fmt.Fprintf(w, ">")
-		if err != nil {
-			return err
-		}
-
 		// Render only nodeElements and nodeTexts
 		for _, child := range ne.children {
 			if _, ok := child.(nodeElement); ok {
