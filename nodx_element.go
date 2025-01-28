@@ -26,7 +26,6 @@ func newNodeElement(isVoid bool, name string, children ...Node) nodeElement {
 	}
 }
 
-// Render writes the HTML element and all its children to the writer.
 func (ne nodeElement) Render(w io.Writer) error {
 	if ne.name == "" {
 		return nil
@@ -37,10 +36,11 @@ func (ne nodeElement) Render(w io.Writer) error {
 		return err
 	}
 
-	// Render only nodeAttributes
 	for _, child := range ne.children {
-		switch child.(type) {
-		case nodeAttribute, ClassMap, StyleMap:
+		if child == nil {
+			continue
+		}
+		if child.IsAttribute() {
 			err = child.Render(w)
 			if err != nil {
 				return err
@@ -54,10 +54,11 @@ func (ne nodeElement) Render(w io.Writer) error {
 	}
 
 	if !ne.isVoid {
-		// Render only nodeElements and nodeTexts
 		for _, child := range ne.children {
-			switch child.(type) {
-			case nodeElement, nodeText:
+			if child == nil {
+				continue
+			}
+			if child.IsElement() {
 				err = child.Render(w)
 				if err != nil {
 					return err
@@ -74,7 +75,6 @@ func (ne nodeElement) Render(w io.Writer) error {
 	return nil
 }
 
-// RenderString returns the HTML element and all its children as a string.
 func (ne nodeElement) RenderString() (string, error) {
 	buf := &strings.Builder{}
 	err := ne.Render(buf)
@@ -84,7 +84,6 @@ func (ne nodeElement) RenderString() (string, error) {
 	return buf.String(), nil
 }
 
-// RenderBytes returns the HTML element and all its children as a byte slice.
 func (ne nodeElement) RenderBytes() ([]byte, error) {
 	buf := &bytes.Buffer{}
 	err := ne.Render(buf)
@@ -92,4 +91,17 @@ func (ne nodeElement) RenderBytes() ([]byte, error) {
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func (ne nodeElement) IsElement() bool {
+	return true
+}
+
+func (ne nodeElement) IsAttribute() bool {
+	return false
+}
+
+func (ne nodeElement) String() string {
+	str, _ := ne.RenderString()
+	return str
 }

@@ -29,6 +29,14 @@ func TestNodeElement(t *testing.T) {
 		assert.Equal(t, expected, got)
 	})
 
+	t.Run("Basic element Stringer interface", func(t *testing.T) {
+		tag := "div"
+		expected := "<div></div>"
+
+		node := newNodeElement(false, tag)
+		assert.Equal(t, expected, node.String())
+	})
+
 	t.Run("Basic element bytes render", func(t *testing.T) {
 		tag := "div"
 		expected := "<div></div>"
