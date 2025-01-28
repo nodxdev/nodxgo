@@ -336,6 +336,17 @@ func TestMap(t *testing.T) {
 		assert.Render(t, expected, node)
 	})
 
+	t.Run("Eval returning attribute", func(t *testing.T) {
+		node := Div(
+			Eval(func() Node {
+				return Attr("class", "test")
+			}),
+			Text("Hello, World!"),
+		)
+		expected := `<div class="test">Hello, World!</div>`
+		assert.Render(t, expected, node)
+	})
+
 	t.Run("Nested Eval", func(t *testing.T) {
 		node := Div(
 			Class("container"),
