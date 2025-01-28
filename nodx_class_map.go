@@ -2,6 +2,7 @@ package nodx
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"sort"
 	"strings"
@@ -44,7 +45,12 @@ func (cm ClassMap) Render(w io.Writer) error {
 	sort.Strings(classes)
 	classesStr := strings.Join(classes, " ")
 
-	return Attr("class", classesStr).Render(w)
+	err := Attr("class", classesStr).Render(w)
+	if err != nil {
+		return fmt.Errorf("failed to render ClassMap: %w", err)
+	}
+
+	return nil
 }
 
 func (cm ClassMap) RenderString() (string, error) {

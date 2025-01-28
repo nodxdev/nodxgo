@@ -27,8 +27,13 @@ func (na nodeAttribute) Render(w io.Writer) error {
 	if na.name == "" {
 		return nil
 	}
+
 	_, err := fmt.Fprintf(w, "%s=\"%s\"", na.name, EscapeHTML(na.value))
-	return err
+	if err != nil {
+		return fmt.Errorf("failed to render %s attribute: %w", na.name, err)
+	}
+
+	return nil
 }
 
 func (na nodeAttribute) RenderString() (string, error) {

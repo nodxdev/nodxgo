@@ -2,6 +2,7 @@ package nodx
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"sort"
 	"strings"
@@ -38,7 +39,12 @@ func (sm StyleMap) Render(w io.Writer) error {
 	sort.Strings(styles)
 	stylesStr := strings.Join(styles, "; ")
 
-	return Attr("style", stylesStr).Render(w)
+	err := Attr("style", stylesStr).Render(w)
+	if err != nil {
+		return fmt.Errorf("failed to render StyleMap: %w", err)
+	}
+
+	return nil
 }
 
 func (sm StyleMap) RenderString() (string, error) {

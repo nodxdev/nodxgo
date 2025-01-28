@@ -67,38 +67,38 @@ func (ne nodeElement) Render(w io.Writer) error {
 
 	_, err := fmt.Fprintf(w, "<%s", ne.name)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to render element name: %w", err)
 	}
 
 	for _, attr := range attrs {
 		// Add a space between each attribute.
 		_, err = fmt.Fprintf(w, " ")
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to render space between attributes: %w", err)
 		}
 
 		err = attr.Render(w)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to render child attribute: %w", err)
 		}
 	}
 
 	_, err = fmt.Fprintf(w, ">")
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to render element end: %w", err)
 	}
 
 	if !ne.isVoid {
 		for _, el := range els {
 			err = el.Render(w)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to render child element: %w", err)
 			}
 		}
 
 		_, err = fmt.Fprintf(w, "</%s>", ne.name)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to render element end: %w", err)
 		}
 	}
 

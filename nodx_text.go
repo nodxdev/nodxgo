@@ -31,7 +31,11 @@ func (nt nodeText) Render(w io.Writer) error {
 		return nil
 	}
 	_, err := fmt.Fprintf(w, "%s", nt.text)
-	return err
+	if err != nil {
+		return fmt.Errorf("failed to render text: %w", err)
+	}
+
+	return nil
 }
 
 func (nt nodeText) RenderString() (string, error) {
