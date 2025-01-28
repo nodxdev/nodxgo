@@ -194,4 +194,30 @@ func TestNodeGroup(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expected, got)
 	})
+
+	t.Run("Expand complex nested group", func(t *testing.T) {
+		template := Div(
+			Class("test1"),
+			Group(
+				Div(
+					Class("test2"),
+					Group(
+						SpanEl(Text("Hello, ")),
+						Group(
+							SpanEl(Text("World!")),
+						),
+					),
+					Group(Group(Group(Group(Group(Group(Group(Group(Group(
+						SpanEl(Text("NodX")),
+					))))))))),
+				),
+			),
+			SpanEl(Text("Hello, World!")),
+		)
+		expected := `<div class="test1"><div class="test2"><span>Hello, </span><span>World!</span><span>NodX</span></div><span>Hello, World!</span></div>`
+
+		got, err := template.RenderString()
+		assert.NoError(t, err)
+		assert.Equal(t, expected, got)
+	})
 }
