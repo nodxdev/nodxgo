@@ -240,8 +240,79 @@ func TestMap(t *testing.T) {
 			}
 			return El("span", Text("!"))
 		}))
-		expected := `<div class="test"><span>Hello</span><span>World</span><span>!</span></div>`
+		expected := `
+			<div class="test">
+				<span>Hello</span>
+				<span>World</span>
+				<span>!</span>
+			</div>
+		`
 
-		assert.Render(t, expected, node)
+		assert.RenderNoSpaces(t, expected, node)
+	})
+
+	t.Run("HTML5 Structure", func(t *testing.T) {
+		node := Group(
+			DocType(),
+			Html(
+				Head(
+					TitleEl(Text("Title")),
+				),
+				Body(
+					H1(Text("Hello, World!")),
+				),
+			),
+		)
+
+		expected := `
+			<!DOCTYPE html>
+			<html>
+				<head>
+					<title>Title</title>
+				</head>
+				<body>
+					<h1>Hello, World!</h1>
+				</body>
+			</html>
+		`
+
+		assert.RenderNoSpaces(t, expected, node)
+	})
+
+	t.Run("Advanced with components and conditions", func(t *testing.T) {
+		button := func(text string, isLarge bool) Node {
+			return Button(
+				ClassMap{
+					"btn":   true,
+					"large": isLarge,
+				},
+				Text(text),
+			)
+		}
+
+		node := Group(
+			Div(
+				StyleMap{
+					"display: flex": true,
+				},
+
+				Main(
+					Class("buttons"),
+					button("Click me", false),
+					button("Click me", true),
+				),
+			),
+		)
+
+		expected := `
+			<div style="display: flex">
+				<main class="buttons">
+					<button class="btn">Click me</button>
+					<button class="btn large">Click me</button>
+				</main>
+			</div>
+		`
+
+		assert.RenderNoSpaces(t, expected, node)
 	})
 }
