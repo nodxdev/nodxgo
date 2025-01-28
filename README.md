@@ -168,7 +168,7 @@ func main() {
     button("Click me 3!"),
   )
 
-  _ := myTemplate.Render(os.Stdout)
+  _ = myTemplate.Render(os.Stdout)
 
   /*
     Output:
