@@ -72,8 +72,9 @@ function generateElements(els: El[], attrs: Attr[]) {
     }
   }
 
-  Deno.removeSync("gen_elements.go");
-  Deno.writeTextFileSync("gen_elements.go", fileContent.join("\n"));
+  writeFile("gen_elements.go", fileContent.join("\n"));
+  writeFile("gen_elements.txt", els.map((el) => el.name).join("\n"));
+
   console.log("Generated gen_elements.go");
 }
 
@@ -111,7 +112,16 @@ function generateAttributes(els: El[], attrs: Attr[]) {
     }
   }
 
-  Deno.removeSync("gen_attributes.go");
-  Deno.writeTextFileSync("gen_attributes.go", fileContent.join("\n"));
+  writeFile("gen_attributes.txt", attrs.map((attr) => attr.name).join("\n"));
+  writeFile("gen_attributes.go", fileContent.join("\n"));
   console.log("Generated gen_attributes.go");
+}
+
+function writeFile(path: string, content: string) {
+  try {
+    Deno.removeSync(path);
+  } catch {
+    // no-op
+  }
+  Deno.writeTextFileSync(path, content);
 }
