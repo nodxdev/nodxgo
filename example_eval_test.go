@@ -8,6 +8,7 @@ func ExampleEval() {
 	node := Div(
 		Class("container"),
 		Eval(func() Node {
+			// You can add your own go code here
 			if condition {
 				return Text("Condition is true")
 			}

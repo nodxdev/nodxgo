@@ -8,6 +8,7 @@ func ExampleIfFunc() {
 	node := Div(
 		Class("container"),
 		IfFunc(condition, func() Node {
+			// You can add your own go code here
 			return Text("Condition is true")
 		}),
 	)
