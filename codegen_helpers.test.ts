@@ -1,6 +1,7 @@
 import { assertEquals } from "jsr:@std/assert@1.0.11";
 import {
   createFuncName,
+  decapitalize,
   hasConflict,
   staticConflicts,
 } from "./codegen_helpers.ts";
@@ -146,4 +147,11 @@ Deno.test("test createFuncName", async (t) => {
       isGlob: true,
     });
   });
+});
+
+Deno.test("test decapitalize", () => {
+  assertEquals(decapitalize("Hello"), "hello");
+  assertEquals(decapitalize("HELLO"), "hELLO");
+  assertEquals(decapitalize("HELLO WORLD"), "hELLO WORLD");
+  assertEquals(decapitalize("HELLO-WORLD"), "hELLO-WORLD");
 });

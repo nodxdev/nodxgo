@@ -1,5 +1,9 @@
 #!/usr/bin/env -S deno run -A
-import { createFuncName, hasConflict } from "./codegen_helpers.ts";
+import {
+  createFuncName,
+  decapitalize,
+  hasConflict,
+} from "./codegen_helpers.ts";
 import type { Attr, El } from "./codegen_helpers.ts";
 
 const elements = await getElements();
@@ -50,6 +54,7 @@ function generateElements(els: El[], attrs: Attr[]) {
   for (const el of els) {
     const isConflict = hasConflict(el.name, els, attrs);
     const funcName = createFuncName(el.name, "El", isConflict);
+    el.description = decapitalize(el.description);
 
     if (el.isVoid) {
       fileContent.push(`// ${funcName.name} ${el.description}`);
@@ -89,10 +94,11 @@ function generateAttributes(els: El[], attrs: Attr[]) {
   for (const attr of attrs) {
     const isConflict = hasConflict(attr.name, els, attrs);
     const funcName = createFuncName(attr.name, "Attr", isConflict);
+    attr.description = decapitalize(attr.description);
 
     if (funcName.isGlob) {
       attr.name = attr.name.replaceAll("*", "");
-      fileContent.push(`// ${funcName.name} ${attr.description}`);
+      fileContent.push(`// ${funcName.name} ${attr.description.toLowerCase()}`);
       fileContent.push(`//`);
       fileContent.push(`// Output: ${attr.name}{key}="{value}"`);
       fileContent.push(`func ${funcName.name}(key string,value string) Node {`);
