@@ -77,10 +77,10 @@ function generateElements(els: El[], attrs: Attr[]) {
     }
   }
 
-  writeFile("gen_elements.go", fileContent.join("\n"));
-  writeFile("gen_elements.txt", els.map((el) => el.name).join("\n"));
-
-  console.log("Generated gen_elements.go");
+  const elNames = els.map((el) => el.name).join("\n");
+  writeFile("generated_elements.go", fileContent.join("\n"));
+  writeFile("generated_elements.txt", elNames);
+  console.log("Generated generated_elements.go");
 }
 
 function generateAttributes(els: El[], attrs: Attr[]) {
@@ -118,9 +118,10 @@ function generateAttributes(els: El[], attrs: Attr[]) {
     }
   }
 
-  writeFile("gen_attributes.txt", attrs.map((attr) => attr.name).join("\n"));
-  writeFile("gen_attributes.go", fileContent.join("\n"));
-  console.log("Generated gen_attributes.go");
+  const attrNames = attrs.map((attr) => attr.name).join("\n");
+  writeFile("generated_attributes.txt", attrNames);
+  writeFile("generated_attributes.go", fileContent.join("\n"));
+  console.log("Generated generated_attributes.go");
 }
 
 function writeFile(path: string, content: string) {
