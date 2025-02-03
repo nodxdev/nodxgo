@@ -46,4 +46,11 @@ func TestNodeAttribute(t *testing.T) {
 		node := newNodeAttribute(key, value)
 		assert.Render(t, expected, node)
 	})
+
+	t.Run("Attribute with no value at all", func(t *testing.T) {
+		key := "disabled"
+		expected := `disabled`
+		node := newNodeAttribute(key)
+		assert.Render(t, expected, node)
+	})
 }

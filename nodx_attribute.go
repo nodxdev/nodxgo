@@ -12,14 +12,23 @@ var _ Node = (*nodeAttribute)(nil)
 
 // nodeAttribute represents an HTML attribute.
 type nodeAttribute struct {
-	name  string
-	value string
+	name     string
+	hasValue bool
+	value    string
 }
 
-func newNodeAttribute(name, value string) nodeAttribute {
+func newNodeAttribute(name string, value ...string) nodeAttribute {
+	val := ""
+	hasValue := false
+	if len(value) > 0 {
+		val = value[0]
+		hasValue = true
+	}
+
 	return nodeAttribute{
-		name:  name,
-		value: value,
+		name:     name,
+		value:    val,
+		hasValue: hasValue,
 	}
 }
 
@@ -28,9 +37,18 @@ func (na nodeAttribute) Render(w io.Writer) error {
 		return nil
 	}
 
-	_, err := fmt.Fprintf(w, "%s=\"%s\"", na.name, EscapeHTML(na.value))
-	if err != nil {
-		return fmt.Errorf("failed to render %s attribute: %w", na.name, err)
+	if !na.hasValue {
+		_, err := fmt.Fprint(w, na.name)
+		if err != nil {
+			return fmt.Errorf("failed to render %s attribute: %w", na.name, err)
+		}
+	}
+
+	if na.hasValue {
+		_, err := fmt.Fprintf(w, "%s=\"%s\"", na.name, EscapeHTML(na.value))
+		if err != nil {
+			return fmt.Errorf("failed to render %s attribute: %w", na.name, err)
+		}
 	}
 
 	return nil

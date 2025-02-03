@@ -66,8 +66,10 @@ func ElVoid(name string, children ...Node) Node {
 
 // Attr creates a new Node representing an HTML attribute with a name and value.
 // The value is HTML-escaped to prevent XSS attacks.
-func Attr(name string, value string) Node {
-	return newNodeAttribute(name, value)
+//
+// If you don't provide a value, the attribute will be rendered without it.
+func Attr(name string, value ...string) Node {
+	return newNodeAttribute(name, value...)
 }
 
 // Text creates a new Node representing an escaped HTML text node.

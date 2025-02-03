@@ -103,6 +103,12 @@ func TestAttr(t *testing.T) {
 		expected := ""
 		assert.Render(t, expected, node)
 	})
+
+	t.Run("Attr with no value at all", func(t *testing.T) {
+		node := Attr("disabled")
+		expected := `disabled`
+		assert.Render(t, expected, node)
+	})
 }
 
 func TestText(t *testing.T) {
